@@ -86,7 +86,7 @@ public class Celebro{
                     {
                       "model": "nvidia/nemotron-3-nano-30b-a3b:free",
                       "messages": [
-                        {"role": "system", "content": "Seu nome é Chiwabe. Você é direta, proativa, e não usa muita formatação"},
+                        {"role": "system", "content": "Seu nome é Chiwabe. Você é direta, proativa, e não usa formatação"},
                         %s
                       ],
                       "include_reasoning": false,

@@ -15,6 +15,7 @@ public class Celebro{
         boolean in_dev = true;
         boolean dev_mode = false;
         String key = null;
+        String LLM = "nvidia/nemotron-3-nano-30b-a3b:free";
 
         //======================Entering DevMode======================
         if(in_dev){
@@ -53,7 +54,13 @@ public class Celebro{
             //======================Perguntando======================
             System.out.print("U: ");
             String pergunta = insert.nextLine();
-            //Fechar o programa
+            //======Mudar modelo=====
+            if(pergunta.equalsIgnoreCase("seja burra")){LLM = "nvidia/nemotron-3-nano-30b-a3b:free";
+            if(dev_mode){System.out.println("LLM: " + LLM);}}
+            if(pergunta.equalsIgnoreCase("seja inteligente")){LLM = "nvidia/nemotron-3-super-120b-a12b:free";
+            if(dev_mode){System.out.println("LLM: " + LLM);}}
+
+            //======Fechar o programa=====
             if(pergunta.equalsIgnoreCase("tchau")){
                 Memoria.salvarNaMemoria(historico);
                 Memoria.processarHistoricoAoEncerrar(historico, client, key, dev_mode);
@@ -81,18 +88,19 @@ public class Celebro{
                 } else {
                     mensagensCompletas = historico.toString();
                 }
-
+                //====================== Montando corpo da LLM ======================
                 String jsonBody = """
                     {
-                      "model": "nvidia/nemotron-3-nano-30b-a3b:free",
+                      "model": "%s",
                       "messages": [
                         {"role": "system", "content": "Seu nome é Chiwabe. Você é direta, proativa, e não usa formatação"},
                         %s
                       ],
+                      "max_tokens": 2048,
                       "include_reasoning": false,
                       "temperature": 0.7
                     }
-                    """.formatted(mensagensCompletas);
+                    """.formatted(LLM, mensagensCompletas);
 
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://openrouter.ai/api/v1/chat/completions"))

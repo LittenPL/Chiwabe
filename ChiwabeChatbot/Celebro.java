@@ -41,7 +41,7 @@ public class Celebro{
         //======================Carregando histórico======================
         StringBuilder historico = Memoria.carregarHistorico();
         if(dev_mode && historico.length() > 0){
-            System.out.println("Histórico recente carregado: " + Memoria.contarMensagens(historico) + " mensagens");
+            System.out.println("Memória ativa carregada: " + Memoria.contarMensagens(historico) + " mensagens");
         }
 
         //Carregando resumos antigos

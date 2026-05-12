@@ -1,3 +1,3 @@
-cmd.exe /k cd C:\Users\pedro\Chiwabe\ChiwabeChatbot
+cmd.exe /k cd /d "%~dp0"
 javac Celebro.java Memoria.java
 java Celebro

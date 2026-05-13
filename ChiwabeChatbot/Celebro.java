@@ -54,13 +54,10 @@ public class Celebro{
             //======================Perguntando======================
             System.out.print("U: ");
             String pergunta = insert.nextLine();
+            
             //======Mudar modelo=====
-            if(pergunta.equalsIgnoreCase("seja burra")){LLM = "nvidia/nemotron-3-nano-30b-a3b:free";
-            System.out.print("U: ");pergunta = insert.nextLine();
-            if(dev_mode){System.out.println("Alterado para Nemotron 3 Nano");}}
-            if(pergunta.equalsIgnoreCase("seja inteligente")){LLM = "nvidia/nemotron-3-super-120b-a12b:free";
-            System.out.print("U: ");pergunta = insert.nextLine();
-            if(dev_mode){System.out.println("Alterado para Nemotron 3 Super");}}
+            if(pergunta.equalsIgnoreCase("seja burra")){LLM = "nvidia/nemotron-3-nano-30b-a3b:free"; System.out.println("Alterado para Nemotron 3 Nano"); continue;}
+            if(pergunta.equalsIgnoreCase("seja inteligente")){LLM = "nvidia/nemotron-3-super-120b-a12b:free"; System.out.println("Alterado para Nemotron 3 Super"); continue;}
 
             //======Fechar o programa=====
             if(pergunta.equalsIgnoreCase("tchau")){

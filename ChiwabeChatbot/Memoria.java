@@ -58,7 +58,7 @@ public class Memoria {
 
     /**
      * Processa o histórico ao encerrar:
-     * - Se > 100 mensagens: resume as antigas e mantém as recentes
+     * - Se > 70 mensagens: resume as antigas e mantém as recentes
      * - Resumos são salvos em memoria_resumida.json (nunca são resumidos novamente)
      * - Memória ativa contém apenas últimas mensagens
      */
@@ -66,8 +66,8 @@ public class Memoria {
         try {
             int totalMensagens = contarMensagens(historico);
             
-            if(totalMensagens > 100){
-                System.out.println("Limite da memória ativa atingido (" + totalMensagens + "/100 mensagens)");
+            if(totalMensagens > 70){
+                System.out.println("Limite da memória ativa atingido (" + totalMensagens + "/70 mensagens)");
                 System.out.println("Comprimindo conversas antigas...");
                 
                 // Extrair primeiras 50 mensagens para resumir

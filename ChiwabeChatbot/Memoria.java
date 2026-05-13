@@ -239,7 +239,7 @@ public class Memoria {
     public static String resumirComIA(String mensagensAntiga, HttpClient client, String key, boolean dev_mode){
         try {
             // Montar prompt para resumir
-            String prompt = "Resuma BREVEMENTE (2-8 frases) esta conversa passada para uma IA:\\n" + mensagensAntiga;
+            String prompt = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada para uma IA:\\n" + mensagensAntiga;
             String promptSafe = prompt
                 .replace("\\", "\\\\")
                 .replace("\"", "\\\"")

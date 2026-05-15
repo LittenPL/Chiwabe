@@ -25,13 +25,6 @@ public class ChiwabeLLM{
             System.out.println("Resumos de memória carregados: " + Memoria.contarMensagens(resumos) + " resumos");
         }
 
-        //======Fechar o programa=====
-            if(pergunta.equalsIgnoreCase("tchau")){
-                Memoria.salvarNaMemoria(historico);
-                Memoria.processarHistoricoAoEncerrar(historico, client, key, dev_mode);
-                System.exit(0);
-            }
-
             //======================Conectando======================
             try{
                 //Escapar caracteres especiais para não quebrar o JSON
@@ -43,8 +36,9 @@ public class ChiwabeLLM{
                     .replace("\t", "\\t");
 
                 //Adicionar pergunta ao histórico
-                if(historico.length() > 0) historico.append(",");
+                if(historico.length() > 0){ historico.append(",");
                 historico.append("{\"role\":\"user\",\"content\":\"").append(perguntaSafe).append("\"}");
+                }
 
 
                 //====================== Montando corpo da LLM ======================
@@ -121,6 +115,10 @@ public class ChiwabeLLM{
                 } else {
                     System.out.println("Não foi possível identificar os tokens");
                 }
+
+                //=============Fechando o programa======================
+                Memoria.salvarNaMemoria(historico, dev_mode);
+                Memoria.processarHistoricoAoEncerrar(historico, client, key, dev_mode);
 
             } catch (Exception e) {
                 e.printStackTrace();

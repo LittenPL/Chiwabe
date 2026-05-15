@@ -34,26 +34,15 @@ public class Memoria {
     /**
      * Salva o histórico completo em memoria.json
      */
-    public static void salvarNaMemoria(StringBuilder historico){
+    public static void salvarNaMemoria(StringBuilder historico, boolean dev_mode){
         try {
             String conteudo = "[" + historico.toString() + "]";
             Files.write(Paths.get("memoria.json"), conteudo.getBytes());
-            System.out.println("Memória salva");
+            if(dev_mode){
+                System.out.println("Memória salva: " + contarMensagens(historico) + " mensagens");}
         } catch (Exception e) {
             System.out.println("Erro ao salvar na memoria: " + e.getMessage());
         }
-    }
-
-    /**
-     * Conta quantas mensagens há na memoria ativa
-     */
-    public static int contarMensagens(StringBuilder historico){
-        int count = 0;
-        String str = historico.toString();
-        for(int i = 0; i < str.length(); i++){
-            if(str.charAt(i) == '{') count++;
-        }
-        return count;
     }
 
     /**
@@ -93,7 +82,9 @@ public class Memoria {
                 // Histórico pequeno - copia tudo
                 String conteudo = "[" + historico.toString() + "]";
                 Files.write(Paths.get("memoria_ativa.json"), conteudo.getBytes());
+                if(dev_mode){
                 System.out.println("Memória ativa salva (" + totalMensagens + " mensagens)");
+                }
             }
             
         } catch (Exception e) {
@@ -239,7 +230,7 @@ public class Memoria {
     public static String resumirComIA(String mensagensAntiga, HttpClient client, String key, boolean dev_mode){
         try {
             // Montar prompt para resumir
-            String prompt = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada para uma IA:\\n" + mensagensAntiga;
+            String prompt = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada, para uma IA:\\n" + mensagensAntiga;
             String promptSafe = prompt
                 .replace("\\", "\\\\")
                 .replace("\"", "\\\"")
@@ -297,5 +288,17 @@ public class Memoria {
             System.out.println("Erro ao comprimir: " + e.getMessage());
         }
         return null;
+    }
+
+        /**
+     * Conta quantas mensagens há na memoria ativa
+     */
+    public static int contarMensagens(StringBuilder historico){
+        int count = 0;
+        String str = historico.toString();
+        for(int i = 0; i < str.length(); i++){
+            if(str.charAt(i) == '{') count++;
+        }
+        return count;
     }
 }

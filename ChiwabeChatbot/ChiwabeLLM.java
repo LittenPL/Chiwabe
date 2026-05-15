@@ -29,6 +29,7 @@ public class ChiwabeLLM{
             if(pergunta.equalsIgnoreCase("tchau")){
                 Memoria.salvarNaMemoria(historico);
                 Memoria.processarHistoricoAoEncerrar(historico, client, key, dev_mode);
+                System.exit(0);
             }
 
             //======================Conectando======================

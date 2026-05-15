@@ -1,6 +1,7 @@
 package com.chiwabe;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +24,8 @@ public class Celebro{
 
         //======================Verificando a chave======================
         try {
-            List<String> linhas = Files.readAllLines(Paths.get(".env"));
+            Path envPath = Paths.get("ChiwabeChatbot", ".env");
+            List<String> linhas = Files.readAllLines(envPath);
             key = linhas.get(0).split("=")[1];
         } catch (Exception e) {
             System.out.println("Erro ao ler arquivo .env");

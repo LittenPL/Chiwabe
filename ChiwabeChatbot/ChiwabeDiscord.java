@@ -6,8 +6,8 @@ public class ChiwabeDiscord {
     public static void main(String[] args) throws Exception{
 
         List<String> linhas = Files.readAllLines(Paths.get(".env"));
-        String token = linhas.get(0).split("=")[1];
-        System.out.println("Token carregado: " + token);
+        String token = linhas.get(1).split("=")[1];
+        String clientId = linhas.get(2).split("=")[1];
 
     }
 }

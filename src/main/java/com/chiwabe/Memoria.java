@@ -20,7 +20,7 @@ public class Memoria {
      */
     public static StringBuilder carregarHistorico(){
         try {
-            String conteudo = new String(Files.readAllBytes(Paths.get("data/memoria_ativa.json")));
+            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_ativa.json")));
             // Remove os colchetes do array JSON e retorna apenas o conteúdo
             conteudo = conteudo.trim();
             if(conteudo.startsWith("[") && conteudo.endsWith("]")){
@@ -39,7 +39,7 @@ public class Memoria {
     public static void salvarNaMemoria(StringBuilder historico, boolean dev_mode){
         try {
             String conteudo = "[" + historico.toString() + "]";
-            Files.write(Paths.get("data/memoria.json"), conteudo.getBytes());
+            Files.write(Paths.get("data/usuarios/CLI/memoria.json"), conteudo.getBytes());
             if(dev_mode){
                 System.out.println("Memória salva: " + contarMensagens(historico) + " mensagens");}
         } catch (Exception e) {
@@ -77,13 +77,13 @@ public class Memoria {
                 
                 // Montar nova memoria ativa: APENAS últimas 40 (sem resumos)
                 String conteudo = "[" + ultimas40 + "]";
-                Files.write(Paths.get("data/memoria_ativa.json"), conteudo.getBytes());
+                Files.write(Paths.get("data/usuarios/CLI/memoria_ativa.json"), conteudo.getBytes());
                 System.out.println("Memória ativa comprimida (" + contarMensagens(new StringBuilder(ultimas40)) + " mensagens recentes)");
                 
             } else {
                 // Histórico pequeno - copia tudo
                 String conteudo = "[" + historico.toString() + "]";
-                Files.write(Paths.get("data/memoria_ativa.json"), conteudo.getBytes());
+                Files.write(Paths.get("data/usuarios/CLI/memoria_ativa.json"), conteudo.getBytes());
                 if(dev_mode){
                 System.out.println("Memória ativa salva (" + totalMensagens + " mensagens)");
                 }
@@ -102,7 +102,7 @@ public class Memoria {
         try {
             String conteudoAtual = "";
             try {
-                conteudoAtual = new String(Files.readAllBytes(Paths.get("data/memoria_resumida.json")));
+                conteudoAtual = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_resumida.json")));
                 // Remove colchetes
                 if(conteudoAtual.startsWith("[") && conteudoAtual.endsWith("]")){
                     conteudoAtual = conteudoAtual.substring(1, conteudoAtual.length() - 1);
@@ -121,7 +121,7 @@ public class Memoria {
             
             // Salvar
             String conteudo = "[" + novoConteudo.toString() + "]";
-            Files.write(Paths.get("data/memoria_resumida.json"), conteudo.getBytes());
+            Files.write(Paths.get("data/usuarios/CLI/memoria_resumida.json"), conteudo.getBytes());
             
         } catch (Exception e) {
             System.out.println("Erro ao adicionar resumo ao histórico: " + e.getMessage());
@@ -134,7 +134,7 @@ public class Memoria {
      */
     public static StringBuilder carregarResumosAntigos(){
         try {
-            String conteudo = new String(Files.readAllBytes(Paths.get("data/memoria_resumida.json")));
+            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_resumida.json")));
             // Remove os colchetes do array JSON e retorna apenas o conteúdo
             conteudo = conteudo.trim();
             if(conteudo.startsWith("[") && conteudo.endsWith("]")){

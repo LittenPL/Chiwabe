@@ -12,15 +12,19 @@ import java.util.regex.Pattern;
 /**
  * Gerenciador de histórico de conversa com persistência em arquivo
  * e resumo automático de conversas antigas
+ * Suporta múltiplos usuários com históricos separados
  */
 public class Memoria {
 
     /**
      * Carrega a memoria ativa do arquivo memoria_ativa.json
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
      */
-    public static StringBuilder carregarHistorico(){
+    public static StringBuilder carregarHistorico(String userId){
         try {
-            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_ativa.json")));
+            garantirPastaUsuario(userId);
+            verificarJson(userId, "memoria_ativa.json");
+            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json")));
             // Remove os colchetes do array JSON e retorna apenas o conteúdo
             conteudo = conteudo.trim();
             if(conteudo.startsWith("[") && conteudo.endsWith("]")){
@@ -35,11 +39,13 @@ public class Memoria {
 
     /**
      * Salva o histórico completo em memoria.json
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
      */
-    public static void salvarNaMemoria(StringBuilder historico, boolean dev_mode){
+    public static void salvarNaMemoria(String userId, StringBuilder historico, boolean dev_mode){
         try {
+            garantirPastaUsuario(userId);
             String conteudo = "[" + historico.toString() + "]";
-            Files.write(Paths.get("data/usuarios/CLI/memoria.json"), conteudo.getBytes());
+            Files.write(Paths.get("data/usuarios/" + userId + "/memoria.json"), conteudo.getBytes());
             if(dev_mode){
                 System.out.println("Memória salva: " + contarMensagens(historico) + " mensagens");}
         } catch (Exception e) {
@@ -52,9 +58,11 @@ public class Memoria {
      * - Se > 70 mensagens: resume as antigas e mantém as recentes
      * - Resumos são salvos em memoria_resumida.json (nunca são resumidos novamente)
      * - Memória ativa contém apenas últimas mensagens
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
      */
-    public static void processarHistoricoAoEncerrar(StringBuilder historico, HttpClient client, String key, boolean dev_mode){
+    public static void processarHistoricoAoEncerrar(String userId, StringBuilder historico, HttpClient client, String key, boolean dev_mode){
         try {
+            garantirPastaUsuario(userId);
             int totalMensagens = contarMensagens(historico);
             
             if(totalMensagens > 70){
@@ -69,7 +77,7 @@ public class Memoria {
                 
                 // Salvar resumo em memoria_resumida.json (histórico de resumos)
                 if(resumo != null && !resumo.isEmpty()){
-                    adicionarResumoAoHistorico(resumo);
+                    adicionarResumoAoHistorico(userId, resumo);
                 }
                 
                 // Extrair últimas 40 mensagens (SEM resumos anteriores)
@@ -77,13 +85,13 @@ public class Memoria {
                 
                 // Montar nova memoria ativa: APENAS últimas 40 (sem resumos)
                 String conteudo = "[" + ultimas40 + "]";
-                Files.write(Paths.get("data/usuarios/CLI/memoria_ativa.json"), conteudo.getBytes());
+                Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), conteudo.getBytes());
                 System.out.println("Memória ativa comprimida (" + contarMensagens(new StringBuilder(ultimas40)) + " mensagens recentes)");
                 
             } else {
                 // Histórico pequeno - copia tudo
                 String conteudo = "[" + historico.toString() + "]";
-                Files.write(Paths.get("data/usuarios/CLI/memoria_ativa.json"), conteudo.getBytes());
+                Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), conteudo.getBytes());
                 if(dev_mode){
                 System.out.println("Memória ativa salva (" + totalMensagens + " mensagens)");
                 }
@@ -97,12 +105,14 @@ public class Memoria {
     /**
      * Adiciona um resumo ao arquivo de histórico de resumos
      * Resumos nunca são resumidos novamente - apenas acumulados
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
      */
-    public static void adicionarResumoAoHistorico(String resumo){
+    public static void adicionarResumoAoHistorico(String userId, String resumo){
         try {
+            garantirPastaUsuario(userId);
             String conteudoAtual = "";
             try {
-                conteudoAtual = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_resumida.json")));
+                conteudoAtual = new String(Files.readAllBytes(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json")));
                 // Remove colchetes
                 if(conteudoAtual.startsWith("[") && conteudoAtual.endsWith("]")){
                     conteudoAtual = conteudoAtual.substring(1, conteudoAtual.length() - 1);
@@ -115,13 +125,13 @@ public class Memoria {
             // Adicionar novo resumo
             StringBuilder novoConteudo = new StringBuilder();
             if(conteudoAtual.length() > 0){
-                novoConteudo.append(conteudoAtual).append(",");
+                novoConteudo.append(",").append(conteudoAtual);
             }
             novoConteudo.append(resumo);
             
             // Salvar
             String conteudo = "[" + novoConteudo.toString() + "]";
-            Files.write(Paths.get("data/usuarios/CLI/memoria_resumida.json"), conteudo.getBytes());
+            Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), conteudo.getBytes());
             
         } catch (Exception e) {
             System.out.println("Erro ao adicionar resumo ao histórico: " + e.getMessage());
@@ -131,10 +141,13 @@ public class Memoria {
     /**
      * Carrega todos os resumos do arquivo memoria_resumida.json
      * Estes resumos serão incluídos no contexto da IA
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
      */
-    public static StringBuilder carregarResumosAntigos(){
+    public static StringBuilder carregarResumosAntigos(String userId){
         try {
-            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/CLI/memoria_resumida.json")));
+            garantirPastaUsuario(userId);
+            verificarJson(userId, "memoria_resumida.json");
+            String conteudo = new String(Files.readAllBytes(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json")));
             // Remove os colchetes do array JSON e retorna apenas o conteúdo
             conteudo = conteudo.trim();
             if(conteudo.startsWith("[") && conteudo.endsWith("]")){
@@ -292,7 +305,7 @@ public class Memoria {
         return null;
     }
 
-        /**
+    /**
      * Conta quantas mensagens há na memoria ativa
      */
     public static int contarMensagens(StringBuilder historico){
@@ -302,5 +315,43 @@ public class Memoria {
             if(str.charAt(i) == '{') count++;
         }
         return count;
+    }
+
+    /**
+     * Garante que a pasta do usuário existe, criando-a se necessário
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
+     */
+    private static void garantirPastaUsuario(String userId){
+        try {
+            java.nio.file.Path pastaUsuario = Paths.get("data/usuarios/" + userId);
+            if (!Files.exists(pastaUsuario)) {
+                Files.createDirectories(pastaUsuario);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao criar pasta do usuário: " + e.getMessage());
+            System.out.println("userId: " + userId);
+        }
+    }
+
+    /**
+     * Cria um JSON novo caso não exista, para evitar erros de arquivo não encontrado
+     * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
+     * @param arquivo Nome do arquivo JSON a ser verificado
+     */
+        private static void verificarJson(String userId, String arquivo){
+        try {
+            java.nio.file.Path arquivoJson = Paths.get("data/usuarios/" + userId + "/" + arquivo);
+            if (!Files.exists(arquivoJson)){
+
+                if (arquivo.equals("memoria_ativa.json")){
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), "[{}]".getBytes());}
+            
+                if (arquivo.equals("memoria_resumida.json")){
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), "[{}]".getBytes());}
+                }
+        } catch (Exception e) {
+            System.out.println("Erro ao criar pasta do usuário: " + e.getMessage());
+            System.out.println("userId: " + userId);
+        }
     }
 }

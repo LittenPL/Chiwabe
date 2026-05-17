@@ -8,21 +8,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChiwabeLLM{
-    public static String Chiwabe(String key, String LLM, String system, String pergunta, boolean dev_mode) throws Exception{
+    public static String Chiwabe(String key, String userId, String LLM, String system, String pergunta, boolean dev_mode) throws Exception{
 
         String resposta = null;
+        //Pergunta vazia, retornar resposta vazia sem chamar a API
+        if(pergunta == null || pergunta.trim().isEmpty()){
+            return "Eu não estou te ouvindo direito, se for não for burro use: @Chiwabe";
+        }
 
         //Iniciando cliente
         HttpClient client = HttpClient.newHttpClient();
         
         //======================Carregando histórico======================
-        StringBuilder historico = Memoria.carregarHistorico();
+        StringBuilder historico = Memoria.carregarHistorico(userId);
         if(dev_mode && historico.length() > 0){
             System.out.println("Memória ativa carregada: " + Memoria.contarMensagens(historico) + " mensagens");
         }
 
         //======================Carregando resumos======================
-        StringBuilder resumos = Memoria.carregarResumosAntigos();
+        StringBuilder resumos = Memoria.carregarResumosAntigos(userId);
         if(dev_mode && resumos.length() > 0){
             System.out.println("Resumos de memória carregados: " + Memoria.contarMensagens(resumos) + " resumos");
         }
@@ -118,9 +122,9 @@ public class ChiwabeLLM{
                     System.out.println("Não foi possível identificar os tokens");
                 }
 
-                //=============Fechando o programa======================
-                Memoria.salvarNaMemoria(historico, dev_mode);
-                Memoria.processarHistoricoAoEncerrar(historico, client, key, dev_mode);
+                //=============Salvando memória======================
+                Memoria.salvarNaMemoria(userId, historico, dev_mode);
+                Memoria.processarHistoricoAoEncerrar(userId, historico, client, key, dev_mode);
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -46,7 +46,7 @@ public class Celebro{
             if(pergunta.equalsIgnoreCase("seja inteligente")){LLM = "nvidia/nemotron-3-super-120b-a12b:free"; System.out.println("Alterado para Nemotron 3 Super"); continue;}
 
             //======================Executando Chiwabe======================
-            String resposta = ChiwabeLLM.Chiwabe(key, "CLI", LLM, system, pergunta, dev_mode);
+            String resposta = ChiwabeLLM.Chiwabe(key, "CLI", LLM, system, pergunta, dev_mode, "");
             System.out.println("""
 
             Chiwabe: """);

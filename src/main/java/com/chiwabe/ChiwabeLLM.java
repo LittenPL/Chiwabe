@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChiwabeLLM{
-    public static String Chiwabe(String key, String userId, String LLM, String system, String pergunta, boolean dev_mode) throws Exception{
+    public static String Chiwabe(String key, String userId, String LLM, String system, String pergunta, boolean dev_mode, String contexto) throws Exception{
 
         String resposta = null;
         //Pergunta vazia, retornar resposta vazia sem chamar a API
@@ -53,6 +53,7 @@ public class ChiwabeLLM{
                       "model": "%s",
                       "messages": [
                         {"role": "system", "content": "%s"},
+                        {"role": "user", "content": "%s"},
                         %s,
                         %s
                       ],
@@ -60,7 +61,7 @@ public class ChiwabeLLM{
                       "include_reasoning": true,
                       "temperature": 0.8
                     }
-                    """.formatted(LLM, system, resumos.toString(), historico.toString());
+                    """.formatted(LLM, system, contexto, resumos.toString(), historico.toString());
 
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://openrouter.ai/api/v1/chat/completions"))

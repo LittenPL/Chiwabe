@@ -13,7 +13,7 @@ public class ChiwabeLLM{
         String resposta = null;
         //Pergunta vazia, retornar resposta vazia sem chamar a API
         if(pergunta == null || pergunta.trim().isEmpty()){
-            return "Eu não estou te ouvindo direito, se for não for burro use: @Chiwabe";
+            return "O que foi? Fala alguma coisa aí!";
         }
 
         //Iniciando cliente

@@ -196,7 +196,7 @@ A guerra deve ser tratada como brutal, longa e desumanizante, não como aventura
         
         //Memória por servidor=============================
         if(memoriaServidor){
-            userId = event.getGuild().getId() + "-" + userId; // Adicionar ID do servidor para criar memória separada por servidor
+            userId = event.getGuild().getId(); // Adicionar ID do servidor para criar memória separada por servidor
         }
 
         //Colocando o nome na mensagem

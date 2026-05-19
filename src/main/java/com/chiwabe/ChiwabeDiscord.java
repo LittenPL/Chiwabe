@@ -193,7 +193,8 @@ A guerra deve ser tratada como brutal, longa e desumanizante, não como aventura
         if(dev_mode){
             System.out.println("[" + userName + " (" + userId + ")]: (" + mensagem + ")");
         }
-
+        
+        //Memória por servidor=============================
         if(memoriaServidor){
             userId = event.getGuild().getId() + "-" + userId; // Adicionar ID do servidor para criar memória separada por servidor
         }

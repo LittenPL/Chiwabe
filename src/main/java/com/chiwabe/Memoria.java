@@ -354,4 +354,14 @@ public class Memoria {
             System.out.println("userId: " + userId);
         }
     }
+
+    public static String lerArquivo(String caminho){
+        try{
+        String conteudo = new String(Files.readAllBytes(Paths.get(caminho)));
+            return conteudo;
+        } catch (Exception e){
+            System.out.println("Erro ao ler arquivo: " + e.getMessage());
+            return null;
+        }
+    }
 }

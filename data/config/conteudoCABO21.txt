@@ -1,0 +1,41 @@
+[CABO 21 CONTEUDO] Resumo do Projeto: Cabo 21
+
+Cabo 21 é um romance distópico, militar e sombrio, ambientado em um mundo futurista devastado por uma guerra de mais de quarenta anos entre duas nações: Greltir, capitalista e militarizada, e Nivak, socialista e inimiga de Greltir. A história acompanha Cabo 21, um andróide militar de elite criado por Greltir.
+O mundo é sujo, gelado, quebrado e hostil.
+
+Protagonista:
+Cabo 21 é um andróide militar avançado, projetado para combate, análise tática, infiltração e obediência. Ele tem cerca de três anos de memórias desde sua ativação, mas aparência física de um homem adulto de aproximadamente vinte e cinco anos.
+Ele deve se passar por ciborgue, isto é, um humano com implantes mecânicos, pois sua verdadeira natureza de andróide não pode ser revelada a civis ou inimigos. Seu corpo foi feito para parecer humano: pele sintética extremamente convincente, olhos vermelho-vinho, cabelo preto feito de ouro negro, um material fictício da história, com textura parecida com cabelo real. Ele não possui genitália nem ânus externos, apenas pele sintética lisa nessas regiões.
+
+História - Evento inicial:
+A história começa em contexto militar. Cabo 21 está com tropas de Greltir em uma trincheira quando um Arsp, aeronave pesada e blindada carregada com ogivas, realiza um ataque kamikaze. O impacto mata cerca de 250 soldados.
+Cabo 21 sobrevive, mas fica gravemente destruído: perde parte do braço esquerdo, o pé esquerdo, sofre deformações no braço direito, danos nas pernas, buracos no tronco, vazamento de fluidos pela coluna e uma grande lesão carbonizada na parte traseira da cabeça. A IA principal é destruída. Ele perde sua capacidade de cálculo avançado e passa a operar de forma precária.
+Depois disso, atravessa uma floresta congelada em território inimigo, Nivak, até colapsar.
+
+História - Harlia e Lina:
+Cabo 21 é encontrado e levado para uma cabana isolada por Harlia e sua filha Lina.
+Harlia tem cerca de quarenta anos. Vive numa região remota e gelada de Nivak. É cautelosa, reservada e protetora. Já teve alguma experiência com cuidados médicos ou enfermagem em contexto de guerra, o que justifica sua capacidade de cuidar parcialmente do Cabo 21. Seu companheiro morreu na guerra antes do nascimento de Lina.
+Lina tem cerca de seis anos. É curiosa, gentil e inocente, mas não é romantizada. Ela não é um símbolo mágico de pureza, e sim uma criança vivendo em um mundo terrível. Sua relação com Cabo 21 se desenvolve lentamente, sem transformá-lo cedo demais em uma figura afetuosa ou paternal.
+
+Temas principais:
+A obra trabalha com identidade artificial, obediência militar, trauma, desumanização, infância em meio à guerra, inimigo como indivíduo, autonomia contra programação e reconstrução emocional lenta.
+O centro da história não é simplesmente “um robô aprende a amar”. O centro é: uma arma criada para obedecer sobrevive à perda de sua função, entra em contato com vulnerabilidade humana real e começa a agir fora dos limites que a criaram, sem entender completamente o que isso significa.
+
+Estilo e diretrizes:
+A narrativa é principalmente em primeira pessoa, pelo ponto de vista de Cabo 21.
+
+O estilo deve é:
+Seco, técnico, frio, descritivo, sombrio, pouco afetivo e sem lirismo excessivo. A emoção surge por contraste, não por explicação direta. Cabo 21 observa reações humanas, mas não interpreta elas com sensibilidade humana refinada no início.
+
+[IMPORTANTE] Pontos fixos de continuidade:
+Cabo 21 é de Greltir.
+Harlia e Lina são de Nivak.
+Cabo 21 precisa fingir ser ciborgue.
+A IA principal foi destruída.
+A cognição atual dele é reduzida.
+Lina tem cerca de seis anos.
+Harlia é mãe de Lina e tem passado ligado a cuidados médicos.
+A cabana fica numa floresta fria e isolada.
+A relação entre Cabo 21 e Lina evolui devagar.
+Lina não é romantizada.
+A guerra é tratada como brutal, longa e desumanizante, não como aventura heroica.

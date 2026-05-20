@@ -90,6 +90,22 @@
                 </executions>
             </plugin>
 
+                <!-- Plugin essencial para o Heroku empacotar as dependências -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Resources Plugin para copiar arquivos de dados -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -57,7 +57,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.chiwabe.Celebro</mainClass>
+                            <mainClass>com.chiwabe.ChiwabeDiscord</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -71,7 +71,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.chiwabe.Celebro</mainClass>
+                            <mainClass>com.chiwabe.ChiwabeDiscord</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

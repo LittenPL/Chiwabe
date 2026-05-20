@@ -1,8 +1,5 @@
 package com.chiwabe;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 import net.dv8tion.jda.api.JDA;
@@ -49,15 +46,28 @@ public class ChiwabeDiscord extends ListenerAdapter {
         String veri = insert.nextLine();
         if(veri.equalsIgnoreCase("n")){memoriaServidor = false;}}
 
-        //======================Lendo credenciais do .env======================
-        List<String> linhas = Files.readAllLines(Paths.get("ChiwabeChatbot", ".env"));
-        apiKey = linhas.get(0).split("=")[1];
-        String discordToken = linhas.get(1).split("=")[1];
-        String clientId = linhas.get(2).split("=")[1];
+        //======================Lendo credenciais das variáveis de ambiente======================
+        apiKey = System.getenv("API_KEY");
+        String discordToken = System.getenv("DISCORD_TOKEN");
+        String clientId = System.getenv("DISCORD_CLIENT_ID");
+
+        // Validar se as variáveis foram carregadas
+        if (apiKey == null || apiKey.isEmpty()) {
+            System.err.println("ERRO: Variável de ambiente API_KEY não configurada!");
+            System.exit(1);
+        }
+        if (discordToken == null || discordToken.isEmpty()) {
+            System.err.println("ERRO: Variável de ambiente DISCORD_TOKEN não configurada!");
+            System.exit(1);
+        }
+        if (clientId == null || clientId.isEmpty()) {
+            System.err.println("ERRO: Variável de ambiente DISCORD_CLIENT_ID não configurada!");
+            System.exit(1);
+        }
 
         if(dev_mode){
-            System.out.println("API Key carregada: " + apiKey.substring(0, 10) + "...");
-            System.out.println("Discord Token carregado: " + discordToken.substring(0, 10) + "...");
+            System.out.println("API Key carregada: " + apiKey.substring(0, Math.min(10, apiKey.length())) + "...");
+            System.out.println("Discord Token carregado: " + discordToken.substring(0, Math.min(10, discordToken.length())) + "...");
             System.out.println("Client ID: " + clientId);
         }
 

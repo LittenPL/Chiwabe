@@ -1,0 +1,2 @@
+# Este arquivo garante que a pasta data/usuarios/ seja versionada no Git
+# Os arquivos de histórico dos usuários serão criados automaticamente em tempo de execução

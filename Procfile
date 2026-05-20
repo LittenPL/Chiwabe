@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* com.chiwabe.ChiwabeDiscord
+worker: java -jar target/chiwabe-chatbot-jar-with-dependencies.jar

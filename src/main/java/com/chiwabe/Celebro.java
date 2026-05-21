@@ -45,12 +45,22 @@ public class Celebro{
             if(pergunta.equalsIgnoreCase("seja burra")){LLM = "nvidia/nemotron-3-nano-30b-a3b:free"; System.out.println("Alterado para Nemotron 3 Nano"); continue;}
             if(pergunta.equalsIgnoreCase("seja inteligente")){LLM = "nvidia/nemotron-3-super-120b-a12b:free"; System.out.println("Alterado para Nemotron 3 Super"); continue;}
 
-            //======================Executando Chiwabe======================
-            String resposta = ChiwabeLLM.Chiwabe(key, "CLI", LLM, system, pergunta, dev_mode, "");
+            //======================Executando Chiwabe com Stream======================
             System.out.println("""
 
             Chiwabe: """);
-            System.out.println(resposta);
+            
+            ChiwabeLLM.ChiwabeStream(key, "CLI", LLM, system, pergunta, dev_mode, "", new ChiwabeLLM.StreamCallback() {
+                @Override
+                public void onChunk(String chunk) {
+                    System.out.print(chunk);}
+                @Override
+                public void onComplete(String fullResponse) {
+                    System.out.println();}
+                @Override
+                public void onError(Exception e) {
+                    System.out.println("\nErro: " + e.getMessage());}
+            });
 
         }
     }

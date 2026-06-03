@@ -344,10 +344,10 @@ public class Memoria {
             if (!Files.exists(arquivoJson)){
 
                 if (arquivo.equals("memoria_ativa.json")){
-                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), "[{}]".getBytes());}
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), "[{\"role\" : \"user\", \"content\" : \"INICIANDO CONVERSA\"}]".getBytes());}
             
                 if (arquivo.equals("memoria_resumida.json")){
-                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), "[{}]".getBytes());}
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), "[{\"role\" : \"system\", \"content\" : \"EXIBINDO RESUMOS DE HISTÓRICO\"}]".getBytes());}
                 }
         } catch (Exception e) {
             System.out.println("Erro ao criar pasta do usuário: " + e.getMessage());

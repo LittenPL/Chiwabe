@@ -38,6 +38,8 @@ echo.
 echo Executando Celebro...
 echo.
 
+chcp 65001
+
 REM Executar a classe principal
 java -cp target/classes com.chiwabe.Celebro
 

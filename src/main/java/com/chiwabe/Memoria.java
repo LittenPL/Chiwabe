@@ -6,8 +6,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Gerenciador de histórico de conversa com persistência em arquivo
@@ -15,7 +17,6 @@ import java.util.regex.Pattern;
  * Suporta múltiplos usuários com históricos separados
  */
 public class Memoria {
-
     /**
      * Carrega a memoria ativa do arquivo memoria_ativa.json
      * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
@@ -73,7 +74,7 @@ public class Memoria {
                 String primeiras50 = extrairPrimeirasNMensagens(historico, 50);
                 
                 // Chamar IA para resumir
-                String resumo = resumirComIA(primeiras50, client, key, dev_mode);
+                String resumo = resumirComIA(primeiras50, "historico", client, key, dev_mode);
                 
                 // Salvar resumo em memoria_resumida.json (histórico de resumos)
                 if(resumo != null && !resumo.isEmpty()){
@@ -125,7 +126,7 @@ public class Memoria {
             // Adicionar novo resumo
             StringBuilder novoConteudo = new StringBuilder();
             if(conteudoAtual.length() > 0){
-                novoConteudo.append(",").append(conteudoAtual);
+                novoConteudo.append(conteudoAtual).append(",");
             }
             novoConteudo.append(resumo);
             
@@ -242,10 +243,21 @@ public class Memoria {
     /**
      * Chama a IA para resumir as mensagens antigas
      */
-    public static String resumirComIA(String mensagensAntiga, HttpClient client, String key, boolean dev_mode){
+    private static final List<String> MODELOS_FALLBACK_RESUMO = List.of(
+        "openrouter/owl-alpha",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "nvidia/nemotron-3-super-120b-a12b:free");
+
+    public static String resumirComIA(String mensagensAntiga, String tipo, HttpClient client, String key, boolean dev_mode){
+        for(String modelo: MODELOS_FALLBACK_RESUMO){
         try {
+            // Tipo de Instrução
+            String instrucao = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada, para uma IA:\\n";
+            if(tipo.equals("historico")){instrucao = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada, para uma IA:\\n";}
+            if(tipo.equals("conteudo")){instrucao = "Resuma este conteúdo em no máximo 8000 caracteres, para o entendimento de uma IA: \\n";}
+
             // Montar prompt para resumir
-            String prompt = "Resuma BREVEMENTE (3 parágrafos) esta conversa passada, para uma IA:\\n" + mensagensAntiga;
+            String prompt = instrucao + mensagensAntiga;
             String promptSafe = prompt
                 .replace("\\", "\\\\")
                 .replace("\"", "\\\"")
@@ -255,13 +267,13 @@ public class Memoria {
 
             String jsonBody = """
                 {
-                  "model": "openrouter/owl-alpha",
+                  "model": "%s",
                   "messages": [
                     {"role": "user", "content": "%s"}
                   ],
                   "temperature": 0.4
                 }
-                """.formatted(promptSafe);
+                """.formatted(modelo, promptSafe);
 
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://openrouter.ai/api/v1/chat/completions"))
@@ -272,36 +284,47 @@ public class Memoria {
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if(dev_mode){
+            if(response.statusCode() != 200){
+                System.out.println("REQUEST:" + jsonBody);
+                System.out.println("STATUS: " + response.statusCode());
+                System.out.println("BODY: " + response.body());}}
             
             if(response.statusCode() == 200){
                 String bruto = response.body();
-                Pattern pattern = Pattern.compile("\"content\"\\s*:\\s*\"(.*?)\"\\s*,\\s*\"refusal\"", Pattern.DOTALL);
-                Matcher matcher = pattern.matcher(bruto);
+                JsonObject root = JsonParser.parseString(bruto)
+                                            .getAsJsonObject();
+                String resumo = root.getAsJsonArray("choices")
+                                    .get(0)
+                                    .getAsJsonObject()
+                                    .getAsJsonObject("message")
+                                    .get("content")
+                                    .getAsString();
+                    
+                // Escapar para JSON
+                String resumoSafe = resumo
+                    .replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t");
+                        
+                System.out.println("Comprimido para: " + resumo);
+
+                if(resumo != null && !resumo.isBlank()){
+                      
+                // Retornar como objeto JSON
+                if(tipo.equals("historico")){
+                return "{\"role\":\"system\",\"content\":\"[RESUMO DE CONVERSA ANTERIOR] " + resumoSafe + "\"}";}
+                if(tipo.equals("conteudo")){return resumo;}}
                 
-                if(matcher.find()){
-                    String resumo = matcher.group(1)
-                        .replace("\\n", "\n")
-                        .replace("\\\"", "\"")
-                        .replace("\\\\", "\\")
-                        .trim();
-                    
-                    // Escapar para JSON
-                    String resumoSafe = resumo
-                        .replace("\\", "\\\\")
-                        .replace("\"", "\\\"")
-                        .replace("\n", "\\n")
-                        .replace("\r", "\\r")
-                        .replace("\t", "\\t");
-                    
-                    System.out.println("Comprimido para: " + resumo);
-                    
-                    // Retornar como objeto JSON
-                    return "{\"role\":\"system\",\"content\":\"[RESUMO DE CONVERSA ANTERIOR] " + resumoSafe + "\"}";
-                }
             }
         } catch (Exception e) {
             System.out.println("Erro ao comprimir: " + e.getMessage());
         }
+        }
+
         return null;
     }
 
@@ -314,6 +337,7 @@ public class Memoria {
         for(int i = 0; i < str.length(); i++){
             if(str.charAt(i) == '{') count++;
         }
+        count--;
         return count;
     }
 
@@ -336,7 +360,7 @@ public class Memoria {
     /**
      * Cria um JSON novo caso não exista, para evitar erros de arquivo não encontrado
      * @param userId ID do usuário (ex: "CLI" para CLI, ou ID numérico para Discord)
-     * @param arquivo Nome do arquivo JSON a ser verificado
+     * @param arquivo Nome do arquivo a ser verificado
      */
         private static void verificarJson(String userId, String arquivo){
         try {
@@ -344,10 +368,13 @@ public class Memoria {
             if (!Files.exists(arquivoJson)){
 
                 if (arquivo.equals("memoria_ativa.json")){
-                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), "[{}]".getBytes());}
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_ativa.json"), "[{\"role\":\"user\",\"content\":\"INICIANDO CONVERSA\"}]".getBytes());}
             
                 if (arquivo.equals("memoria_resumida.json")){
-                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), "[{}]".getBytes());}
+                    Files.write(Paths.get("data/usuarios/" + userId + "/memoria_resumida.json"), "[{\"role\":\"system\",\"content\":\"EXIBINDO RESUMOS DO HISTÓRICO\"}]".getBytes());}
+                
+                if (arquivo.equals("conteudo.txt")){
+                    Files.write(Paths.get("data/usuarios/" + userId + "/conteudo.txt"), "".getBytes());}
                 }
         } catch (Exception e) {
             System.out.println("Erro ao criar pasta do usuário: " + e.getMessage());
@@ -362,6 +389,34 @@ public class Memoria {
         } catch (Exception e){
             System.out.println("Erro ao ler arquivo: " + e.getMessage());
             return null;
+        }
+    }
+
+    /**
+     * Carrega o conteúdo salvo do usuário
+     * @param userId ID do usuário
+     */
+    public static String carregarConteudo(String userId) {
+        try {
+            verificarJson(userId, "conteudo.txt");
+            return new String(Files.readAllBytes(Paths.get("data/usuarios/" + userId + "/conteudo.txt")));
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar conteúdo: " + e.getMessage());
+            return "Erro ao carregar o texto.";
+        }
+    }
+
+    /**
+     * Salva o conteúdo do usuário
+     * @param userId ID do usuário
+     * @param conteudo Texto para ser salvo
+     */
+    public static void salvarConteudo(String userId, String conteudo){
+        try{
+            verificarJson(userId, "conteudo.txt");
+            Files.write(Paths.get("data/usuarios/" + userId + "/conteudo.txt"), conteudo.getBytes());
+        }catch (Exception e){
+            System.out.println("Erro ao salvar conteúdo: " + e.getMessage());
         }
     }
 }

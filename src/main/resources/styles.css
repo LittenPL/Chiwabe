@@ -1,0 +1,415 @@
+@charset "UTF-8";
+
+/* 1. DEFINE AS VARIÁVEIS QUE A BIBLIOTECA MDFX PRECISA */
+.markdown-view {
+    -mdfx-font-color: #cccccc; /* Cor padrão do texto (mude se quiser) */
+    -fx-font-family: "DejaVu Sans Mono", "Consolas", "Monaco", "Liberation Mono", monospace;
+    -fx-font-size: 14px;
+}
+
+/* 2. CORRIGE O BUG INTERNO DA BORDA DA BIBLIOTECA (ERRO ANTERIOR) */
+.markdown-code-background {
+    -fx-border-color: transparent !important;
+}
+
+/* ============================================
+   Chiwabe GUI - Tema Escuro Moderno
+   ============================================ */
+
+/* Cores principais */
+:root {
+    -fx-primary-dark: #1a1a1a;
+    -fx-primary-medium: #2d2d2d;
+    -fx-accent-green: #00ff00;
+    -fx-accent-cyan: #00ffff;
+    -fx-accent-yellow: #ffff00;
+    -fx-accent-red: #ff4444;
+    -fx-text-light: #cccccc;
+}
+
+/* Root */
+.root {
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #cccccc;
+    -fx-font-family: "DejaVu Sans Mono", "Consolas", "Monaco", "Liberation Mono", monospace;
+    -fx-font-size: 12;
+}
+
+/* ============================================
+   Botões
+   ============================================ */
+
+.button {
+    -fx-padding: 8 16 8 16;
+    -fx-background-color: #444444;
+    -fx-text-fill: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
+
+.button:pressed {
+    -fx-background-color: #333333;
+}
+
+.button:disabled {
+    -fx-background-color: #222222;
+    -fx-text-fill: #666666;
+    -fx-opacity: 0.6;
+}
+
+/* ============================================
+   TextArea
+   ============================================ */
+
+.text-area {
+    -fx-control-inner-background: #1a1a1a;
+    -fx-text-fill: #cccccc;
+    -fx-font-family: "DejaVu Sans Mono", "Consolas", "Monaco", "Liberation Mono", monospace;
+    -fx-font-size: 12;
+    -fx-padding: 8;
+    -fx-border-color: #00ff00;
+    -fx-border-width: 1;
+}
+
+.text-area:focused {
+    -fx-border-color: #00ffff;
+    -fx-border-width: 2;
+}
+
+.text-area .content {
+    -fx-padding: 5;
+}
+
+/* ============================================
+   ScrollPane
+   ============================================ */
+
+.scroll-pane {
+    -fx-background-color: #1a1a1a;
+    -fx-control-inner-background: #1a1a1a;
+}
+
+.scroll-pane:focused {
+    -fx-border-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: #2d2d2d;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: #2d2d2d;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #00ff00;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #00ffff;
+}
+
+/* ============================================
+   Labels
+   ============================================ */
+
+.label {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 12;
+}
+
+.text {
+    -fx-fill: #cccccc;
+    -fx-font-family: "DejaVu Sans Mono", "Consolas", "Monaco", "Liberation Mono", monospace;
+    -fx-font-size: 12;
+}
+
+/* --- ESTILO GERAL DO TEXTO PADRÃO (PARÁGRAFOS) --- */
+.markdown-view .p {
+    -fx-font-family: "DejaVu Sans Mono", "Consolas", "Monaco", "Liberation Mono", monospace;
+    -fx-font-size: 14px;
+    -fx-fill: #cccccc; /* Cor braca para melhor leitura */
+}
+
+/* --- TÍTULOS (H1, H2, H3) --- */
+.markdown-view .h1 {
+    -fx-font-family: "Arial Black", sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50; /* Cor azul escuro/petróleo */
+}
+
+.markdown-view .h2 {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 20px;
+    -fx-fill: #16a085; /* Cor verde água */
+}
+
+.markdown-view .h3 {
+    -fx-font-size: 16px;
+    -fx-fill: #7f8c8d;
+}
+
+/* --- TEXTO EM NEGRITO (STRONG) --- */
+.markdown-view .strong {
+    -fx-font-weight: bold;
+    -fx-fill: #000000; /* Preto puro para destacar */
+}
+
+/* --- TEXTO EM ITÁLICO (EM) --- */
+.markdown-view .em {
+    -fx-font-style: italic;
+}
+
+/* --- LINKS (A) --- */
+.markdown-view .a {
+    -fx-fill: #2980b9; /* Cor de link azul clássico */
+    -fx-underline: true;
+}
+
+/* --- CÓDIGOS EM BLOCO (PRE / CODE) --- */
+.markdown-view .code {
+    -fx-font-family: "Courier New", monospace;
+    -fx-fill: #c7254e; /* Cor avermelhada de código */
+    -fx-background-color: #f9f2f4;
+}
+
+/* ============================================
+   CheckBox
+   ============================================ */
+
+.check-box {
+    -fx-text-fill: #ffff00;
+    -fx-font-size: 12;
+}
+
+.check-box:selected {
+    -fx-text-fill: #00ff00;
+}
+
+.check-box .box {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #00ff00;
+    -fx-border-width: 2;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #00ff00;
+}
+
+.check-box:selected .mark {
+    -fx-text-fill: #000000;
+}
+
+/* ============================================
+   Separator
+   ============================================ */
+
+.separator {
+    -fx-border-color: #00ff00;
+}
+
+.separator:vertical {
+    -fx-padding: 0 5 0 5;
+}
+
+/* ============================================
+   Alert
+   ============================================ */
+
+.alert {
+    -fx-background-color: #2d2d2d;
+}
+
+.alert .header-panel {
+    -fx-background-color: #1a1a1a;
+}
+
+.alert .content {
+    -fx-text-fill: #cccccc;
+}
+
+.alert .title {
+    -fx-text-fill: #00ff00;
+    -fx-font-weight: bold;
+}
+
+/* ============================================
+   Animações
+   ============================================ */
+
+@keyframes blink {
+    0% { -fx-opacity: 1; }
+    50% { -fx-opacity: 0.5; }
+    100% { -fx-opacity: 1; }
+}
+
+.blinking {
+    -fx-animation: blink 1s infinite;
+}
+
+/* ============================================
+    Sidebar - Histórico de Chats
+    ============================================ */
+
+.sidebar-title {
+    -fx-text-fill: #00ff00;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.sidebar-button {
+    -fx-background-color: #224085;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 8 10 8 10;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #2d5aaa;
+}
+
+.sidebar-button:pressed {
+    -fx-background-color: #1a3f66;
+}
+
+.chat-item {
+    -fx-padding: 8;
+    -fx-border-radius: 4;
+    -fx-cursor: hand;
+}
+
+.chat-item:hover {
+    -fx-background-color: #2d2d2d;
+}
+
+.chat-item-active {
+    -fx-background-color: #224085;
+}
+
+.chat-item-label {
+    -fx-font-size: 12;
+}
+
+.chat-item-label-active {
+    -fx-text-fill: #00ff00;
+    -fx-font-weight: bold;
+}
+
+.chat-item-label-inactive {
+    -fx-text-fill: #cccccc;
+}
+
+.delete-button {
+    -fx-background-color: #ff3131;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 2 6 2 6;
+    -fx-font-size: 10;
+    -fx-cursor: hand;
+}
+
+.delete-button:hover {
+    -fx-background-color: #ff5555;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #cc0000;
+}
+
+/* ============================================
+    MDFX - Listas e Elementos Especiais
+    ============================================ */
+
+/* Estilizar listas (ul, ol) */
+.markdown-view .list-view,
+.markdown-view .list-cell {
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #cccccc;
+}
+
+.markdown-view .list-cell {
+    -fx-padding: 5;
+    -fx-border-color: transparent;
+}
+
+.markdown-view .list-cell:hover {
+    -fx-background-color: #2d2d2d;
+}
+
+.markdown-view .list-cell:selected {
+    -fx-background-color: #224085;
+    -fx-text-fill: #ffffff;
+}
+
+/* Estilizar itens de lista (li) */
+.markdown-view .li {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 14px;
+    -fx-padding: 5;
+}
+
+/* Estilizar blocos de código */
+.markdown-view .code-block,
+.markdown-view .pre {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-text-fill: #cccccc;
+}
+
+/* Estilizar citações (blockquote) */
+.markdown-view .blockquote,
+.markdown-view .bq {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #00ff00;
+    -fx-border-width: 0 0 0 3;
+    -fx-padding: 10;
+    -fx-text-fill: #cccccc;
+}
+
+/* Estilizar tabelas */
+.markdown-view .table {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #2d2d2d;
+}
+
+.markdown-view .table-row {
+    -fx-background-color: #202020;
+    -fx-border-color: #2d2d2d;
+}
+
+.markdown-view .table-row:hover {
+    -fx-background-color: #2d2d2d;
+}
+
+.markdown-view .table-cell {
+    -fx-text-fill: #cccccc;
+    -fx-padding: 8;
+    -fx-border-color: #2d2d2d;
+}
+
+/* Estilizar imagens */
+.markdown-view .image-view {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+/* Estilizar linhas horizontais (hr) */
+.markdown-view .hr {
+    -fx-border-color: #00ff00;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10 0 10 0;
+}
